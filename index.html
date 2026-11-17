@@ -74,6 +74,55 @@
             pointer-events: none;
             letter-spacing: 0.5px;
         }
+
+        /* Panel lateral de redes sociales para la contraportada */
+        #social-sidebar {
+            position: absolute;
+            left: 40px;
+            top: 50%;
+            transform: translateY(-50%) translateX(-50px);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.5s ease-in-out;
+            background: rgba(28, 14, 5, 0.9);
+            border: 1px solid #5a3215;
+            padding: 20px 15px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            z-index: 100;
+        }
+
+        #social-sidebar.visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(-50%) translateX(0);
+        }
+
+        .sidebar-text {
+            font-size: 12px;
+            color: #d4b28c;
+            text-align: center;
+            max-width: 130px;
+            line-height: 1.4;
+            margin: 0;
+            font-style: italic;
+        }
+
+        .sidebar-icon {
+            width: 36px;
+            height: 36px;
+            transition: transform 0.2s ease, filter 0.2s ease;
+            display: block;
+        }
+
+        .sidebar-icon:hover {
+            transform: scale(1.1);
+            filter: brightness(1.2);
+        }
     </style>
 </head>
 <body>
@@ -85,10 +134,25 @@
 
     <div class="instructions">Haz clic y arrastra las esquinas de la revista para abrirla y hojearla</div>
 
+    <!-- Menú lateral que aparece en la última página -->
+    <div id="social-sidebar">
+        <p class="sidebar-text">Explora nuestros contenidos oficiales:</p>
+        <a href="https://youtu.be/zNTu51NcPUM?si=nqlUohw675ayUsct" target="_blank" title="YouTube">
+            <img src="assets/yt.png" alt="YouTube" class="sidebar-icon">
+        </a>
+        <a href="https://www.instagram.com/reel/DehZQJvtDRx/?utm_source=ig_web_copy_link&cplk=MzRlODBiNWFlZA==&srtk=MzRlODBiNWFlZA==" target="_blank" title="Instagram">
+            <img src="assets/ig.png" alt="Instagram" class="sidebar-icon">
+        </a>
+        <a href="https://bunavie.github.io/Revista_Muisca/" target="_blank" title="Repositorio GitHub">
+            <img src="assets/git.png" alt="GitHub" class="sidebar-icon">
+        </a>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const bookElement = document.getElementById('book');
             const pageWidth = 420; // Ancho optimizado para encajar perfecto
+            const socialSidebar = document.getElementById('social-sidebar');
 
             for (let i = 1; i <= 14; i++) {
                 const pageDiv = document.createElement('div');
@@ -133,10 +197,13 @@
                 // Centrado dinámico cuando el libro está cerrado en los extremos
                 if (currentIndex === 0) {
                     bookElement.style.transform = `translateX(-${pageWidth / 2}px)`;
+                    socialSidebar.classList.remove('visible');
                 } else if (currentIndex === pages.length - 1) {
                     bookElement.style.transform = `translateX(${pageWidth / 2}px)`;
+                    socialSidebar.classList.add('visible'); // Muestra el panel lateral en la última página
                 } else {
                     bookElement.style.transform = `translateX(0px)`;
+                    socialSidebar.classList.remove('visible');
                 }
             }
 
